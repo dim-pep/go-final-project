@@ -1,5 +1,7 @@
 package main
 
+import "go1f/pkg/server"
+
 func main() {
-	// TODO: запустить веб-сервер
+	server.Start()
 }

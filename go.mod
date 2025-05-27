@@ -1,8 +1,10 @@
 module github.com/Pepidastr/go-final-project
 
 go 1.23.1
+replace go1f => ./
 
 require (
+	go1f v0.0.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/stretchr/testify v1.10.0
 	modernc.org/sqlite v1.37.1
