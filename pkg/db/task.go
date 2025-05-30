@@ -63,10 +63,42 @@ func UpdateTask(task *Task) error {
 	}
 	count, err := res.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("ошибка при чтении данных из базы данных: %v", err)
+		return fmt.Errorf("ошибка выполнения запроса UPDATE: %v", err)
 	}
 	if count == 0 {
-		return fmt.Errorf("не найдена запись с id = %s", task.ID)
+		return fmt.Errorf("не найдена запись с id = %s, при обновлении даных", task.ID)
+	}
+	return nil
+}
+
+func UpdateTaskDate(id string, date string) error {
+	query := `UPDATE scheduler SET date = ? WHERE id = ?`
+	res, err := db.Exec(query, date, id)
+	if err != nil {
+		return fmt.Errorf("ошибка выполнения запроса UPDATE: %v", err)
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("ошибка выполнения запроса UPDATE: %v", err)
+	}
+	if count == 0 {
+		return fmt.Errorf("не найдена запись с id = %s,при обновлении даты", id)
+	}
+	return nil
+}
+
+func DeleteTask(id string) error {
+	query := `DELETE FROM scheduler WHERE id = ?`
+	res, err := db.Exec(query, id)
+	if err != nil {
+		return fmt.Errorf("ошибка выполнения запроса DELETE: %v", err)
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("ошибка выполнения запроса DELETE: %v", err)
+	}
+	if count == 0 {
+		return fmt.Errorf("невозможно удалить запись с id = %s, при удалении задачи", id)
 	}
 	return nil
 }

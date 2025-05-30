@@ -11,6 +11,7 @@ func Init() {
 	http.HandleFunc("/api/nextdate", nextDayHandler)
 	http.HandleFunc("/api/task", taskHandler)
 	http.HandleFunc("/api/tasks", tasksHandler)
+	http.HandleFunc("/api/task/done", doneHandler)
 }
 
 func nextDayHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +43,8 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 		getTaskHandler(w, r)
 	case "PUT":
 		updateTaskHandler(w, r)
-		// case "DELETE":
-		// 	deleteTaskHandler(w, r)
+	case "DELETE":
+		deleteTaskHandler(w, r)
 	default:
 		http.Error(w, "Неизвестный метод", http.StatusMethodNotAllowed)
 	}
