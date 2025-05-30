@@ -10,6 +10,7 @@ import (
 func Init() {
 	http.HandleFunc("/api/nextdate", nextDayHandler)
 	http.HandleFunc("/api/task", taskHandler)
+	http.HandleFunc("/api/tasks", tasksHandler)
 }
 
 func nextDayHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,10 +38,10 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		addTaskHandler(w, r)
-		// case "GET":
-		// 	getTaskHandler(w, r)
-		// case "PUT":
-		// 	updateTaskHandler(w, r)
+	case "GET":
+		getTaskHandler(w, r)
+	case "PUT":
+		updateTaskHandler(w, r)
 		// case "DELETE":
 		// 	deleteTaskHandler(w, r)
 	default:
