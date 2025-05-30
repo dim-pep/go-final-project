@@ -54,3 +54,19 @@ func GetTask(id string) (*Task, error) {
 	}
 	return &task, nil
 }
+
+func UpdateTask(task *Task) error {
+	query := `UPDATE scheduler SET date = ?, title = ?, comment = ?, repeat = ? WHERE id = ?`
+	res, err := db.Exec(query, task.Date, task.Title, task.Comment, task.Repeat, task.ID)
+	if err != nil {
+		return fmt.Errorf("ошибка выполнения запроса UPDATE: %v", err)
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("ошибка при чтении данных из базы данных: %v", err)
+	}
+	if count == 0 {
+		return fmt.Errorf("не найдена запись с id = %s", task.ID)
+	}
+	return nil
+}
