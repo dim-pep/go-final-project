@@ -23,8 +23,8 @@ CREATE INDEX IF NOT EXISTS idx_date ON scheduler(date);
 )
 
 func Init(dbFile string) error {
-
-	db, err := sql.Open("sqlite", dbFile)
+	var err error
+	db, err = sql.Open("sqlite", dbFile)
 	if err != nil {
 		return fmt.Errorf("ошибка открытия базы данных: %v", err)
 	}

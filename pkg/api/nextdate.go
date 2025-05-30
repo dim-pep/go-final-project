@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"go1f/pkg/db"
 	"strconv"
 	"strings"
 	"time"
@@ -164,4 +165,30 @@ func getMonthTrue(monthStr string) ([13]bool, error) {
 		month[monthTrueInt] = true
 	}
 	return month, nil
+}
+
+func checkDate(task *db.Task) error {
+	var next string
+	now := time.Now()
+	if task.Date == "" {
+		task.Date = now.Format(dateFormat)
+	}
+	t, err := time.Parse("20060102", task.Date)
+	if err != nil {
+		return fmt.Errorf("ошибка преобразования даты, task.Date: %s, err: %v", task.Date, err)
+	}
+	if task.Repeat != "" {
+		next, err = NextDate(now, task.Date, task.Repeat)
+		if err != nil {
+			return fmt.Errorf("ошибка преобразования даты, task.Date: %s, err: %v", task.Date, err)
+		}
+	}
+	if afterDate(now, t) {
+		if len(task.Repeat) == 0 || task.Repeat == "d 1" {
+			task.Date = now.Format(dateFormat)
+		} else {
+			task.Date = next
+		}
+	}
+	return nil
 }
