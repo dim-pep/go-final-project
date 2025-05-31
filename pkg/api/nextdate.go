@@ -131,14 +131,6 @@ func afterDate(dateAfter, dateBefore time.Time) bool {
 	return dateAfter.After(dateBefore)
 }
 
-// func afterDate(dateAfter, dateBefore time.Time) bool {
-
-// 	truncatedAfter := dateAfter.Truncate(24 * time.Hour)
-// 	truncatedBefore := dateBefore.Truncate(24 * time.Hour)
-
-// 	return truncatedAfter.After(truncatedBefore) || truncatedAfter.Equal(truncatedBefore)
-// }
-
 func getDayTrue(dayStr string) ([]bool, []int, error) {
 	var day []bool = make([]bool, 32)
 	var daysOnEnd []int

@@ -24,5 +24,3 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJson(w, TasksResp{Tasks: tasks}, http.StatusOK)
 }
-
-//s
