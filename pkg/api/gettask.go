@@ -2,8 +2,9 @@ package api
 
 import (
 	"fmt"
-	"go1f/pkg/db"
 	"net/http"
+
+	"go1f/pkg/db"
 )
 
 func getTaskHandler(w http.ResponseWriter, r *http.Request) {

@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"go1f/pkg/db"
 	"io"
 	"net/http"
+
+	"go1f/pkg/db"
 )
 
 func addTaskHandler(w http.ResponseWriter, r *http.Request) {

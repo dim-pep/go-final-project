@@ -1,25 +1,28 @@
 package api
 
 import (
-	"go1f/pkg/db"
 	"net/http"
+
+	"go1f/pkg/db"
 )
+
+const limit = 30
 
 type TasksResp struct {
 	Tasks []*db.Task `json:"tasks"`
 }
 
 func tasksHandler(w http.ResponseWriter, r *http.Request) {
-	tasks, err := db.Tasks(30)
+	tasks, err := db.Tasks(limit)
 	if err != nil {
 		writeJson(w, map[string]string{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 	if tasks == nil {
 		writeJson(w, TasksResp{Tasks: []*db.Task{}}, http.StatusOK)
-	} else {
-		writeJson(w, TasksResp{Tasks: tasks}, http.StatusOK)
+		return
 	}
+	writeJson(w, TasksResp{Tasks: tasks}, http.StatusOK)
 }
 
 //s

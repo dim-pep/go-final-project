@@ -2,10 +2,11 @@ package api
 
 import (
 	"fmt"
-	"go1f/pkg/db"
 	"strconv"
 	"strings"
 	"time"
+
+	"go1f/pkg/db"
 )
 
 const dateFormat = "20060102"
@@ -85,7 +86,7 @@ func NextDate(now time.Time, dstart, repeat string) (string, error) {
 			}
 		}
 	case "m":
-		var month [13]bool
+		var month []bool = make([]bool, 13)
 		if len(repeatSplit) < 2 {
 			return "", fmt.Errorf("нету параметров для правила m")
 		}
@@ -130,8 +131,16 @@ func afterDate(dateAfter, dateBefore time.Time) bool {
 	return dateAfter.After(dateBefore)
 }
 
-func getDayTrue(dayStr string) ([32]bool, []int, error) {
-	var day [32]bool
+// func afterDate(dateAfter, dateBefore time.Time) bool {
+
+// 	truncatedAfter := dateAfter.Truncate(24 * time.Hour)
+// 	truncatedBefore := dateBefore.Truncate(24 * time.Hour)
+
+// 	return truncatedAfter.After(truncatedBefore) || truncatedAfter.Equal(truncatedBefore)
+// }
+
+func getDayTrue(dayStr string) ([]bool, []int, error) {
+	var day []bool = make([]bool, 32)
 	var daysOnEnd []int
 	daysTrue := strings.Split(dayStr, ",")
 	for _, dayTrue := range daysTrue {
@@ -151,8 +160,8 @@ func getDayTrue(dayStr string) ([32]bool, []int, error) {
 	return day, daysOnEnd, nil
 }
 
-func getMonthTrue(monthStr string) ([13]bool, error) {
-	var month [13]bool
+func getMonthTrue(monthStr string) ([]bool, error) {
+	var month []bool = make([]bool, 13)
 	monthsTrue := strings.Split(monthStr, ",")
 	for _, monthTrue := range monthsTrue {
 		monthTrueInt, err := strconv.Atoi(monthTrue)
@@ -184,7 +193,7 @@ func checkDate(task *db.Task) error {
 		}
 	}
 	if afterDate(now, t) {
-		if len(task.Repeat) == 0 || task.Repeat == "d 1" {
+		if len(task.Repeat) == 0 || task.Repeat == "d 1" || t.Day() == now.Day() {
 			task.Date = now.Format(dateFormat)
 		} else {
 			task.Date = next

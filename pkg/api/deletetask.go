@@ -1,8 +1,9 @@
 package api
 
 import (
-	"go1f/pkg/db"
 	"net/http"
+
+	"go1f/pkg/db"
 )
 
 func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
